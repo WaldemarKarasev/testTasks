@@ -15,10 +15,12 @@ MainWindow::MainWindow(QWidget *parent)
     QStringList headers;
     headers << "IP address" << "Port" << "message" << "Disconnect";
 
+    // создание таблицы с необходимыми нам столобцами
     ui->tableWidget->setColumnCount(4);
     ui->tableWidget->setHorizontalHeaderLabels(headers);
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
+    // запуск сервера и соединение сигналов
     qDebug() << "MainWindowcStarting..." << QThread::currentThread();
     server = new Server(this);
     server->startServer();
@@ -33,6 +35,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+// добавление новой строки таблицу при новом соединении
 void MainWindow::addNewConnectionRow(int SD, QString IP, quint16 port)
 {
     qDebug() << "From server to GUI addnewRow";
@@ -56,6 +59,8 @@ void MainWindow::addNewConnectionRow(int SD, QString IP, quint16 port)
     SDtoRow.push_back(SD);
 }
 
+
+// функция для обработки нового сообщения, приходящего от клиента
 void MainWindow::receiveNewMessage(int SD, QByteArray data)
 {
     qDebug() << "From server to GUI receiveNewMessage";
@@ -71,6 +76,7 @@ void MainWindow::receiveNewMessage(int SD, QByteArray data)
     }
 }
 
+// удаление строки из таблицы
 void MainWindow::removeRow(int SD)
 {
     qDebug() << "remove Client SD:" << SD;
@@ -80,6 +86,7 @@ void MainWindow::removeRow(int SD)
     reloadTableOnClientDeletion(index);
 }
 
+// обработка кнопки принудительного разрыва соединения
 void MainWindow::on_forced_deletion_clicked()
 {
     QPushButton* tmpButton = qobject_cast<QPushButton*>(sender());
@@ -97,9 +104,8 @@ void MainWindow::on_forced_deletion_clicked()
     emit forcedDeletion(SDtoRow[tmpSD]);
 }
 
+// обновление переменной SDtoRow для корректного отображения сообщений от оставшихся подключенных соединений
 void MainWindow::reloadTableOnClientDeletion(int index)
 {
-    qDebug() << "reloadTableOnClientDeletion";
     SDtoRow.remove(index);
-
 }

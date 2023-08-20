@@ -33,9 +33,14 @@ signals:
 
 private:
     Ui::MainWindow *ui;
+
+    // Переменная сервера
     Server* server;
     int clientsCount = 0;
 
+    // переменная, которая используется для определения строчки для текущего соединения
+    // SDtoRow[i] = SD;
+    // где i - номер строчки, SD - дескриптов сокета
     QVector<int> SDtoRow;
 
     void reloadTableOnClientDeletion(int index);

@@ -6,6 +6,7 @@ Server::Server(QObject *parent)
 
 }
 
+// старт сервера, ставим на прослушивание серверный сокет
 void Server::startServer()
 {
     if(!listen(QHostAddress::Any, 1234))
@@ -18,28 +19,10 @@ void Server::startServer()
     }
 }
 
+// обработка нового соединения и создания для него отдельного потока
 void Server::incomingConnection(qintptr socketDescriptor)
 {
     qDebug() << socketDescriptor << " Connecting...";
-
-//    QThread* newThread = new QThread();
-//    Connection* newConnection = new Connection(socketDescriptor);
-//    newConnection->moveToThread(newThread);
-//    QObject::connect(newThread, &QThread::started, clients.last(), &Connection::start);
-//    QObject::connect(newConnection, &Connection::finished, newThread, &QThread::quit);
-
-//    QObject::connect(newConnection, &Connection::addRowToGUI, this, &Server::addnewRowToGUI);
-//    QObject::connect(newConnection, &Connection::messageToGUI, this, &Server::sendNewMessageToGUI);
-
-//    clients.push_back(new Connection(socketDescriptor));
-//    clients.last()->moveToThread(newThread);
-//    QObject::connect(newThread, &QThread::started, clients.last(), &Connection::start);
-//    QObject::connect(clients.last(), &Connection::finished, newThread, &QThread::quit);
-
-//    QObject::connect(clients.last(), &Connection::addRowToGUI, this, &Server::addnewRowToGUI);
-//    QObject::connect(clients.last(), &Connection::messageToGUI, this, &Server::sendNewMessageToGUI);
-
-//    newThread->start();
 
     clientsThreads.push_back(new QThread());
     clients.push_back(new Connection(socketDescriptor));
@@ -55,6 +38,7 @@ void Server::incomingConnection(qintptr socketDescriptor)
 }
 
 
+// обработка сигнала о новом сообщении от клиента и передача в GUI для его отображения
 void Server::sendNewMessageToGUI(int SD, QByteArray data)
 {
     qDebug() << "From Connection to Server sendMessage";
@@ -62,6 +46,7 @@ void Server::sendNewMessageToGUI(int SD, QByteArray data)
     qDebug() << "Stop";
 }
 
+// обработка сигнала о новом соединении и запрос на добавление новой строки в табдицу GUI
 void Server::addnewRowToGUI(int SD, QString IP, quint16 port)
 {
     qDebug() << "From Connection to Server addnewRow " << QThread::currentThread();
@@ -69,6 +54,7 @@ void Server::addnewRowToGUI(int SD, QString IP, quint16 port)
     qDebug() << "Stop emitting signal";
 }
 
+// удаление клиента. Данная функция вызывается при эммитирования сигнала от клиента о закрытии соединения
 void Server::removeClient(int SD)
 {
     Connection* removableClient = qobject_cast<Connection*>(sender());
@@ -84,6 +70,7 @@ void Server::removeClient(int SD)
     emit removeRowGUI(SD);
 }
 
+// принудительное удаление клиента. Данная функция вызывается при нажатии кнопки discnnect в GUI, что вызывает принудительное закрытие соединения
 void Server::forcedDeletion(int SD)
 {
     auto itr = std::find_if(clients.begin(), clients.end(), [SD](Connection* client)

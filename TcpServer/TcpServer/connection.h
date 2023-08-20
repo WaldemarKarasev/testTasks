@@ -6,6 +6,7 @@
 #include <QTcpSocket>
 #include <QHostAddress>
 
+// класс для обработки соединения в отдельном потоке
 class Connection : public QObject
 {
     Q_OBJECT
@@ -29,6 +30,7 @@ public slots:
     void disconnect();
 
 private:
+    // переменные сокета и его дескриптора
     QTcpSocket* socket;
     int socketDescriptor;
 };

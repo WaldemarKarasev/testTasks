@@ -9,6 +9,7 @@ Connection::Connection(int ID, QObject *parent)
     socketDescriptor = ID;
 }
 
+// при старте потока вызывается данная функция
 void Connection::start()
 {
     qInfo() << socketDescriptor << " Starting" << QThread::currentThread();
@@ -21,12 +22,15 @@ void Connection::start()
 
     QObject::connect(socket, &QTcpSocket::readyRead, this, &Connection::readyRead);
     QObject::connect(socket, &QTcpSocket::disconnected, this, &Connection::disconnect);
+
+    // отсылаем сигнал для добавления новой строки в таблицу в GUI
     emit addRowToGUI(socketDescriptor, socket->peerAddress().toString(), socket->peerPort());
 
     qInfo() << socketDescriptor << " Connected";
 
 }
 
+// слот обрабатывающий приходящие сообщения от сокета
 void Connection::readyRead()
 {
     QByteArray data = socket->readAll();
@@ -35,6 +39,7 @@ void Connection::readyRead()
     emit messageToGUI(socketDescriptor, data);
 }
 
+// слот для разрыва соединения с сокетом и эммитирование сигнала для прекращения работ потока
 void Connection::disconnect()
 {
     socket->deleteLater();

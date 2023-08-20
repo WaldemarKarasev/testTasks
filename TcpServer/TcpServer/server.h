@@ -7,6 +7,7 @@
 
 #include "connection.h"
 
+// класс обрабатывающий входящие соединения и создающий новые потоки для каждого клиента
 class Server : public QTcpServer
 {
     Q_OBJECT
@@ -28,6 +29,7 @@ protected:
     void incomingConnection(qintptr socketDescriptor);
 
 private:
+    // переменные для хранения клинтов и их потоков
     QList<Connection*> clients;
     QList<QThread*> clientsThreads;
 };

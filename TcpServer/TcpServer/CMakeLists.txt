@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.11)
 
 project(TcpServer VERSION 0.1 LANGUAGES CXX)
 
@@ -11,7 +11,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt5 COMPONENTS Widgets Sql REQUIRED)
+find_package(QT NAMES Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Core Network REQUIRED)
 
 
@@ -26,12 +26,6 @@ set(PROJECT_SOURCES
         connection.h
 )
 add_executable(TcpServer ${PROJECT_SOURCES})
-
-if(SQLite3_FOUND)
-    include_directories(${SQLITE_INCLUDE_DIRS})
-    target_link_libraries(TcpServer, ${SQLITE_LIBRARIES})
-endif(SQLite3_FOUND)
-
 
 target_link_libraries(TcpServer PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Network)
 
