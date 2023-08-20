@@ -3,7 +3,7 @@
 1.1. Вид приложения при начальной подгрузке БД cities.db3
 ![initView](https://github.com/WaldemarKarasev/testTasks/assets/95939606/ad84f276-d74e-4777-9c0f-78a5da41ad65)
 
-1.2. Сортировка по столбцам
+1.2. Сортировка по столбцам. Сортируем по столбцу alt
 ![sortedColumn](https://github.com/WaldemarKarasev/testTasks/assets/95939606/85ae0a36-4ccc-40bc-af69-7ff16fee9e79)
 
 1.3. Изменение параметра в ячейке
