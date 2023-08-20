@@ -1,0 +1,4 @@
+/home/pingvinus/qtprojects/TcpServer/build-TcpServer-Desktop-Debug/CMakeFiles/TcpServer.dir
+/home/pingvinus/qtprojects/TcpServer/build-TcpServer-Desktop-Debug/CMakeFiles/edit_cache.dir
+/home/pingvinus/qtprojects/TcpServer/build-TcpServer-Desktop-Debug/CMakeFiles/rebuild_cache.dir
+/home/pingvinus/qtprojects/TcpServer/build-TcpServer-Desktop-Debug/CMakeFiles/TcpServer_autogen.dir
